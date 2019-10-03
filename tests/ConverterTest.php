@@ -2,17 +2,16 @@
 
 namespace Tests;
 
+use PHPUnit\Framework\TestCase;
+use GNAHotelSolutions\CurrencyConverter\Price;
+use GNAHotelSolutions\CurrencyConverter\Currency;
 use GNAHotelSolutions\CurrencyConverter\Converter;
 use GNAHotelSolutions\CurrencyConverter\CurrenciesRepository;
-use GNAHotelSolutions\CurrencyConverter\Currency;
 use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
-use GNAHotelSolutions\CurrencyConverter\Price;
-use PHPUnit\Framework\TestCase;
 
 class ConverterTest extends TestCase
 {
-
-    /** @var  Converter */
+    /** @var Converter */
     private $converter;
 
     protected function setUp()
@@ -24,7 +23,7 @@ class ConverterTest extends TestCase
         $this->repository = new CurrenciesRepository([
             $baseCurrency,
             new Currency('USD', 0.5, 2),
-            new Currency('GBP', 2, 2)
+            new Currency('GBP', 2, 2),
         ]);
 
         $this->converter = new Converter($baseCurrency, $this->repository);
@@ -100,7 +99,7 @@ class ConverterTest extends TestCase
     public function exception_is_thrown_if_currency_does_not_exists()
     {
         $this->expectException(CurrencyNotFoundException::class);
-        
+
         $price = $this->converter->from(new Price(500, 'USD'))->to('WWW')->convert();
     }
 
@@ -136,6 +135,5 @@ class ConverterTest extends TestCase
         $this->converter->from(new Price(4, 'USD'));
 
         $this->assertEquals(2, $this->converter->convertAmount($currency));
-
     }
 }
