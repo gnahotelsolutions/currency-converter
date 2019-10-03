@@ -6,16 +6,16 @@ use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
 
 class Converter
 {
-    /** @var  Price */
+    /** @var Price */
     private $price;
 
-    /** @var  Currency */
+    /** @var Currency */
     private $currency;
 
-    /** @var  CurrenciesRepositoryContract */
+    /** @var CurrenciesRepositoryContract */
     private $currencies;
-    
-    /** @var  Currency */
+
+    /** @var Currency */
     private $base;
 
     public function __construct(Currency $baseCurrency, CurrenciesRepositoryContract $currencies)
@@ -27,11 +27,11 @@ class Converter
 
     public function price(): Price
     {
-        return $this->price; 
+        return $this->price;
     }
 
-    public function currency(): ?Currency 
-    { 
+    public function currency(): ?Currency
+    {
         return $this->currency;
     }
 
@@ -94,8 +94,8 @@ class Converter
      */
     public function convertAmount(Currency $currency)
     {
-        $ratio = $this->currency() && $this->currency()->is($this->base()->name()) 
-            ? $this->base()->ratio()/$currency->ratio() 
+        $ratio = $this->currency() && $this->currency()->is($this->base()->name())
+            ? $this->base()->ratio() / $currency->ratio()
             : $currency->ratio();
 
         return round($this->price()->amount() * $ratio, $currency->decimals());

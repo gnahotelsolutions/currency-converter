@@ -2,13 +2,12 @@
 
 namespace GNAHotelSolutions\CurrencyConverter;
 
-use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
 use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
+use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
 
 class CurrenciesRepository implements CurrenciesRepositoryContract
 {
-
-    /** @var  array */
+    /** @var array */
     private $currencies;
 
     public function __construct(array $currencies)
@@ -29,7 +28,7 @@ class CurrenciesRepository implements CurrenciesRepositoryContract
 
     public function append(Currency $currency): void
     {
-        $this->currencies[$currency->name()] = $currency;        
+        $this->currencies[$currency->name()] = $currency;
     }
 
     public function has(string $currency): bool

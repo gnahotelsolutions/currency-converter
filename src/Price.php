@@ -4,11 +4,10 @@ namespace GNAHotelSolutions\CurrencyConverter;
 
 class Price
 {
-
-    /** @var  float */
+    /** @var float */
     protected $amount;
 
-    /** @var  string */
+    /** @var string */
     protected $currency;
 
     const CURRENCY_SYMBOLS = [
@@ -25,14 +24,14 @@ class Price
         $this->amount = $this->parseAmount($amount);
     }
 
-    public function amount(): float 
-    { 
-        return $this->amount; 
+    public function amount(): float
+    {
+        return $this->amount;
     }
 
-    public function currency(): string 
+    public function currency(): string
     {
-        return $this->currency; 
+        return $this->currency;
     }
 
     private function parseCurrency($currency): string
@@ -46,7 +45,7 @@ class Price
 
     protected function parseAmount($amount): float
     {
-        return (float)$amount;
+        return (float) $amount;
     }
 
     public function formattedWith(string $currency): string
