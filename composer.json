@@ -1,0 +1,40 @@
+{
+    "name": "gnahotelsolutions/currency-converter",
+    "description": "Convert price amounts between currencies",
+    "keywords": [
+        "gnahotelsolutions",
+        "currency-converter"
+    ],
+    "homepage": "https://github.com/gnahotelsolutions/currency-converter",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "David Llop",
+            "email": "dllop@gnahs.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GNAHotelSolutions\\CurrencyConverter\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gnahotelsolutions\\CurrencyConverter\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
