@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests;
+namespace Gnahotelsolutions\CurrencyConverter\Tests;
 
-use PHPUnit\Framework\TestCase;
-use GNAHotelSolutions\CurrencyConverter\Price;
-use GNAHotelSolutions\CurrencyConverter\Currency;
 use GNAHotelSolutions\CurrencyConverter\Converter;
 use GNAHotelSolutions\CurrencyConverter\CurrenciesRepository;
+use GNAHotelSolutions\CurrencyConverter\Currency;
 use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
+use GNAHotelSolutions\CurrencyConverter\Price;
+use PHPUnit\Framework\TestCase;
 
 class ConverterTest extends TestCase
 {
