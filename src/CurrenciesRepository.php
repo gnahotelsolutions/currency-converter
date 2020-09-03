@@ -2,8 +2,8 @@
 
 namespace GNAHotelSolutions\CurrencyConverter;
 
-use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
 use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
+use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
 
 class CurrenciesRepository implements CurrenciesRepositoryContract
 {
