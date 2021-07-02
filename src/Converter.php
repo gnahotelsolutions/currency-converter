@@ -6,17 +6,13 @@ use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
 
 class Converter
 {
-    /** @var Price */
-    private $price;
+    private Price $price;
 
-    /** @var Currency */
-    private $currency;
+    private Currency $currency;
 
-    /** @var CurrenciesRepositoryContract */
-    private $currencies;
+    private CurrenciesRepositoryContract $currencies;
 
-    /** @var Currency */
-    private $base;
+    private Currency $base;
 
     public function __construct(Currency $baseCurrency, CurrenciesRepositoryContract $currencies)
     {
@@ -30,7 +26,7 @@ class Converter
         return $this->price;
     }
 
-    public function currency(): ?Currency
+    public function currency(): Currency
     {
         return $this->currency;
     }
@@ -54,12 +50,12 @@ class Converter
     }
 
     /**
-     * Set the currency that will be used for the convertion.
+     * Set the currency that will be used for the conversion.
      *
-     * @param  string|Currency $currency
+     * @param Currency|string $currency
      * @return $this
      */
-    public function to($currency): self
+    public function to(Currency|string $currency): self
     {
         $this->currency = $currency instanceof Currency
             ? $currency
@@ -89,10 +85,10 @@ class Converter
     /**
      * Convert the amount performing different operations depending on the currency we want.
      *
-     * @param $convertRatio
+     * @param Currency $currency
      * @return float|int
      */
-    public function convertAmount(Currency $currency)
+    public function convertAmount(Currency $currency): float|int
     {
         $ratio = $this->currency() && $this->currency()->is($this->base()->name())
             ? $this->base()->ratio() / $currency->ratio()
@@ -106,7 +102,7 @@ class Converter
      *
      * @return Price
      */
-    public function convertToBase()
+    public function convertToBase(): Price
     {
         $this->currency = $this->base();
 

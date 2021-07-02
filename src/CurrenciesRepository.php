@@ -7,8 +7,7 @@ use GNAHotelSolutions\CurrencyConverter\Exceptions\CurrencyNotFoundException;
 
 class CurrenciesRepository implements CurrenciesRepositoryContract
 {
-    /** @var array */
-    private $currencies;
+    private array $currencies;
 
     public function __construct(array $currencies)
     {
@@ -17,7 +16,10 @@ class CurrenciesRepository implements CurrenciesRepositoryContract
         }
     }
 
-    public function get(string $currency): ?Currency
+    /**
+     * @throws CurrencyNotFoundException
+     */
+    public function get(string $currency): Currency
     {
         if (! isset($this->currencies[$currency])) {
             throw new CurrencyNotFoundException($currency);

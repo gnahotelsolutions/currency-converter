@@ -4,11 +4,9 @@ namespace GNAHotelSolutions\CurrencyConverter;
 
 class Price
 {
-    /** @var float */
-    protected $amount;
+    protected float $amount;
 
-    /** @var string */
-    protected $currency;
+    protected string $currency;
 
     const CURRENCY_SYMBOLS = [
         '€' => 'EUR',
@@ -48,17 +46,8 @@ class Price
         return (float) $amount;
     }
 
-    public function formattedWith(string $currency): string
-    {
-        if ($this->getCurrency() !== $currency) {
-            return "{$this} ({$this->convertTo($currency)})";
-        }
-
-        return "{$this}";
-    }
-
     public function __toString()
     {
-        return "{$this->getAmount()} {$this->getCurrency()}";
+        return "{$this->amount()} {$this->currency()}";
     }
 }

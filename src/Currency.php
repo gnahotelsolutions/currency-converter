@@ -4,14 +4,11 @@ namespace GNAHotelSolutions\CurrencyConverter;
 
 class Currency
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var float */
-    private $ratio;
+    private float $ratio;
 
-    /** @var int */
-    private $decimals;
+    private int $decimals;
 
     public function __construct(string $name, float $ratio, int $decimals)
     {
