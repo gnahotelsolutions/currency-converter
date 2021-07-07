@@ -11,10 +11,10 @@ use PHPUnit\Framework\TestCase;
 
 class ConverterTest extends TestCase
 {
-    /** @var Converter */
-    private $converter;
+    private Converter $converter;
+    private CurrenciesRepository $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -100,7 +100,7 @@ class ConverterTest extends TestCase
     {
         $this->expectException(CurrencyNotFoundException::class);
 
-        $price = $this->converter->from(new Price(500, 'USD'))->to('WWW')->convert();
+        $this->converter->from(new Price(500, 'USD'))->to('WWW')->convert();
     }
 
     /** @test */
@@ -123,6 +123,8 @@ class ConverterTest extends TestCase
         $this->converter->from(new Price(2, 'EUR'));
 
         $currency = new Currency('FCU', 2.655, 2);
+
+        $this->converter->to($currency);
 
         $this->assertSame(5.31, $this->converter->convertAmount($currency));
 
