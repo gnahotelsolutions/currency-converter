@@ -1,7 +1,7 @@
 # Convert price amounts between currencies
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gnahotelsolutions/currency-converter.svg?style=flat-square)](https://packagist.org/packages/gnahotelsolutions/currency-converter)
-[![Build Status](https://img.shields.io/travis/gnahotelsolutions/currency-converter/master.svg?style=flat-square)](https://travis-ci.org/gnahotelsolutions/currency-converter)
+![Build status](https://github.com/gnahotelsolutions/currency-converter/actions/workflows/php.yml/badge.svg)
 [![Quality Score](https://img.shields.io/scrutinizer/g/gnahotelsolutions/currency-converter.svg?style=flat-square)](https://scrutinizer-ci.com/g/gnahotelsolutions/currency-converter)
 [![Total Downloads](https://img.shields.io/packagist/dt/gnahotelsolutions/currency-converter.svg?style=flat-square)](https://packagist.org/packages/gnahotelsolutions/currency-converter)
 
