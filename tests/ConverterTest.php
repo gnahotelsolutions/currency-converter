@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 class ConverterTest extends TestCase
 {
     private Converter $converter;
-    private CurrenciesRepository $repository;
 
     protected function setUp(): void
     {
@@ -20,17 +19,16 @@ class ConverterTest extends TestCase
 
         $baseCurrency = new Currency('EUR', 1, 2);
 
-        $this->repository = new CurrenciesRepository([
+        $repository = new CurrenciesRepository([
             $baseCurrency,
-            new Currency('USD', 0.5, 2),
-            new Currency('GBP', 2, 2),
+            new Currency('USD', 0.3, 2),
+            new Currency('GBP', 5, 2),
         ]);
 
-        $this->converter = new Converter($baseCurrency, $this->repository);
+        $this->converter = new Converter($baseCurrency, $repository);
     }
 
-    /** @test */
-    public function from_price_is_assigned()
+    public function test_from_price_is_assigned(): void
     {
         $price = new Price(1000, 'EUR');
 
@@ -39,72 +37,70 @@ class ConverterTest extends TestCase
         $this->assertEquals($price, $this->converter->price());
     }
 
-    /** @test */
-    public function to_currency_is_assigned()
+    public function test_to_currency_is_assigned(): void
     {
         $this->converter->to('USD');
 
         $this->asserttrue($this->converter->currency()->is('USD'));
     }
 
-    /** @test */
-    public function can_convert_currency_to_base()
+    public function test_can_convert_currency_to_base(): void
     {
         $priceEuro = $this->converter->from(new Price(500, 'USD'))->convertToBase();
 
         $this->assertSame('EUR', $priceEuro->currency());
 
-        $this->assertSame(1000.0, $priceEuro->amount());
+        $this->assertSame(1666.67, $priceEuro->amount());
 
         $price = $this->converter->from(new Price(500, 'GBP'))->convertToBase();
 
-        $this->assertSame(250.0, $price->amount());
-
-        $this->converter = new Converter(new Currency('FCU', 10, 2), $this->repository);
-
-        $priceBase = $this->converter->from(new Price(500, 'USD'))->convertToBase();
-
-        $this->assertSame('FCU', $priceBase->currency());
-
-        $this->assertSame(10000.0, $priceBase->amount());
-
-        $price = $this->converter->from(new Price(500, 'GBP'))->convertToBase();
-
-        $this->assertSame(2500.0, $price->amount());
+        $this->assertSame(100.0, $price->amount());
     }
 
-    /** @test */
-    public function currency_is_converted()
+    public function test_currency_is_converted_through_base(): void
     {
-        $price = $this->converter->from(new Price(500, 'USD'))->to('GBP')->convert();
+        $price = $this->converter->from(new Price(158.78, 'GBP'))->to('USD')->convert();
 
-        $this->assertNotEquals(500, $price->amount());
+        $this->assertEquals(9.53, $price->amount());
 
-        $this->assertSame('GBP', $price->currency());
+        $this->assertSame('USD', $price->currency());
+    }
 
+    public function test_currency_is_not_converted_when_from_and_to_are_the_same(): void
+    {
         $price = $this->converter->from(new Price(500, 'USD'))->to('USD')->convert();
 
         $this->assertSame(500.0, $price->amount());
 
         $this->assertSame('USD', $price->currency());
+    }
 
+    public function test_currency_is_converted_to_base_without_calling_specific_method(): void
+    {
         $price = $this->converter->from(new Price(500, 'USD'))->to('EUR')->convert();
 
-        $this->assertSame(1000.0, $price->amount());
+        $this->assertEquals(1666.67, $price->amount());
 
         $this->assertSame('EUR', $price->currency());
     }
 
-    /** @test */
-    public function exception_is_thrown_if_currency_does_not_exists()
+    public function test_currency_is_converted_from_base_correctly(): void
+    {
+        $price = $this->converter->from(new Price(100, 'EUR'))->to('USD')->convert();
+
+        $this->assertEquals(30.00, $price->amount());
+
+        $this->assertSame('USD', $price->currency());
+    }
+
+    public function test_exception_is_thrown_if_currency_does_not_exists(): void
     {
         $this->expectException(CurrencyNotFoundException::class);
 
         $this->converter->from(new Price(500, 'USD'))->to('WWW')->convert();
     }
 
-    /** @test */
-    public function can_convert_amount()
+    public function test_can_convert_amount(): void
     {
         $this->converter->from(new Price(2, 'EUR'))->to('USD');
 
@@ -117,8 +113,7 @@ class ConverterTest extends TestCase
         $this->assertSame(2.0, $this->converter->convertAmount($currency));
     }
 
-    /** @test */
-    public function decimals_are_displayed_depending_on_the_currency()
+    public function test_decimals_are_displayed_depending_on_the_currency(): void
     {
         $this->converter->from(new Price(2, 'EUR'));
 

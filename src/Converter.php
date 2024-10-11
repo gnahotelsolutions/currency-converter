@@ -6,31 +6,32 @@ use GNAHotelSolutions\CurrencyConverter\Contracts\CurrenciesRepositoryContract;
 
 class Converter
 {
-    private Price $price;
+    protected Price $price;
+    protected Currency $currency;
 
-    private Currency $currency;
-
-    private CurrenciesRepositoryContract $currencies;
-
-    private Currency $base;
-
-    public function __construct(Currency $baseCurrency, CurrenciesRepositoryContract $currencies)
+    public function __construct(protected Currency $base, protected CurrenciesRepositoryContract $currencies)
     {
-        $this->base = $baseCurrency;
-
-        $this->currencies = $currencies;
     }
 
+    /**
+     * Get the price we want to convert.
+     */
     public function price(): Price
     {
         return $this->price;
     }
 
+    /**
+     * Get the currency we want the price converted to.
+     */
     public function currency(): Currency
     {
         return $this->currency;
     }
 
+    /**
+     * Get the base currency we use to convert from one ratio to another.
+     */
     public function base(): Currency
     {
         return $this->base;
@@ -38,9 +39,6 @@ class Converter
 
     /**
      * Set the original price to be converted.
-     *
-     * @param Price $price
-     * @return $this
      */
     public function from(Price $price): self
     {
@@ -51,9 +49,6 @@ class Converter
 
     /**
      * Set the currency that will be used for the conversion.
-     *
-     * @param Currency|string $currency
-     * @return $this
      */
     public function to(Currency|string $currency): self
     {
@@ -66,16 +61,18 @@ class Converter
 
     /**
      * Convert the price to the currency. It will convert to the base currency first if needed.
-     *
-     * @return Price
      */
     public function convert(): Price
     {
-        if ($this->currency()->is($this->price->currency())) {
+        if ($this->isConvertingToSameCurrency()) {
             return $this->price;
         }
 
-        if ($this->base()->is($this->price->currency(), $this->currency()->name())) {
+        if ($this->isConvertingToBase()) {
+            return $this->convertToBase();
+        }
+
+        if ($this->isConvertingWithoutUsingBase()) {
             $this->price = (new self($this->base(), $this->currencies))->from($this->price)->convertToBase();
         }
 
@@ -84,9 +81,6 @@ class Converter
 
     /**
      * Convert the amount performing different operations depending on the currency we want.
-     *
-     * @param Currency $currency
-     * @return float|int
      */
     public function convertAmount(Currency $currency): float|int
     {
@@ -98,9 +92,7 @@ class Converter
     }
 
     /**
-     * Convert the current price to EUR.
-     *
-     * @return Price
+     * Convert the current price to base currency.
      */
     public function convertToBase(): Price
     {
@@ -109,5 +101,29 @@ class Converter
         $amount = $this->convertAmount($this->currencies->get($this->price->currency()));
 
         return new Price($amount, $this->base()->name());
+    }
+
+    /**
+     * Check from and to use the same currency.
+     */
+    protected function isConvertingToSameCurrency(): bool
+    {
+        return $this->currency()->is($this->price->currency());
+    }
+
+    /**
+     * Check is trying to convert to the base currency.
+     */
+    protected function isConvertingToBase(): bool
+    {
+        return $this->base()->is($this->currency()->name());
+    }
+
+    /**
+     * Check neither from nor to are the base currency.
+     */
+    protected function isConvertingWithoutUsingBase(): bool
+    {
+        return !$this->base()->is($this->price->currency(), $this->currency()->name());
     }
 }
